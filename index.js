@@ -35,6 +35,10 @@ app.engine(
 			add: function (a, b) {
 				return a + b
 			},
+			ifEquals: function (a, b, options) {
+				if (a === b) return options.fn(this)
+				return options.inverse(this)
+			},
 			newline: function() {
 				return '\n'
 			}

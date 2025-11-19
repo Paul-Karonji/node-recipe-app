@@ -4,6 +4,7 @@
             <h1>{{recipe.title}}</h1>
             <div class="recipe-actions">
                 <button class="btn btn-primary" onclick="showEditForm()">Edit Recipe</button>
+                <button class="btn btn-sm btn-fav" data-id="{{recipe.id}}">{{#if recipe.is_favorite}}★ Favorite{{else}}☆ Favorite{{/if}}</button>
                 <a href="/recipes" class="btn btn-secondary">Back to All Recipes</a>
             </div>
         </div>
@@ -62,6 +63,10 @@
                 <div class="form-group">
                     <label for="edit-method">Method:</label>
                     <textarea id="edit-method" name="method" rows="6" required>{{recipe.method}}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-tags">Tags (comma separated):</label>
+                    <input id="edit-tags" name="tags" value="{{recipe.tags}}" />
                 </div>
                 
                 <div class="form-actions">

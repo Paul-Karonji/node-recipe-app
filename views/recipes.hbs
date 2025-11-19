@@ -3,6 +3,25 @@
         <h1>All Recipes</h1>
         <button class="btn btn-primary" onclick="showAddForm()">Add New Recipe</button>
     </div>
+    <div style="margin: 1rem 0; display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <form id="search-form" action="/recipes" method="GET" style="display:flex; gap:0.5rem; align-items:center;">
+            <input type="search" name="search" placeholder="Search recipes..." value="{{search}}" />
+            <button class="btn btn-sm" type="submit">Search</button>
+        </form>
+        <form id="filter-form" action="/recipes" method="GET" style="display:flex; gap:0.5rem; align-items:center;">
+            {{#if tags}}
+            <select name="tag" onchange="this.form.submit()">
+                <option value="">All tags</option>
+                {{#each tags}}
+                    <option value="{{this}}" {{#if ../selectedTag}}{{#ifEquals ../selectedTag this}}selected{{/ifEquals}}{{/if}}>{{this}}</option>
+                {{/each}}
+            </select>
+            {{/if}}
+            <label style="display:flex; align-items:center; gap:0.25rem;">
+                <input type="checkbox" name="favorites" value="1" {{#if favorites}}checked{{/if}} onchange="this.form.submit()" /> Favorites only
+            </label>
+        </form>
+    </div>
     
     <!-- Add Recipe Form (initially hidden) -->
     <div id="add-recipe-form" class="recipe-form" style="display: none;">
@@ -16,6 +35,11 @@
             <div class="form-group">
                 <label for="ingredients">Ingredients:</label>
                 <textarea id="ingredients" name="ingredients" rows="4" placeholder="List ingredients, one per line" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="tags">Tags (comma separated):</label>
+                <input type="text" id="tags" name="tags" placeholder="e.g. dinner, italian" />
             </div>
             
             <div class="form-group">
@@ -34,8 +58,14 @@
     <div class="recipes-grid">
         {{#if recipes}}
             {{#each recipes}}
-            <div class="recipe-card">
+            <div class="recipe-card" data-id="{{id}}">
                 <h3><a href="/recipes/{{id}}">{{title}}</a></h3>
+                <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:0.5rem;">
+                    {{#if tags}}
+                        <small style="color:#666">Tags: {{tags}}</small>
+                    {{/if}}
+                    <button class="btn btn-sm btn-fav" data-id="{{id}}" style="margin-left:auto">{{#if is_favorite}}★ Favorite{{else}}☆ Favorite{{/if}}</button>
+                </div>
                 <div class="recipe-preview">
                     <p><strong>Ingredients:</strong> {{truncate ingredients 100}}</p>
                 </div>
